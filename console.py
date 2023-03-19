@@ -136,11 +136,14 @@ class HBNBCommand(cmd.Cmd):
                     try:
                         value = float(keysNvalues[1])
                     except Exception:
-                        """Edge Case Missing ? Escape double quotes with backslash"""
+                        """
+                        Edge Case Missing ?
+                        Escape double quotes with backslash
+                        """
                         value = ''
                         value += keysNvalues[1][1:-1].replace("_", " ")
                 parameter_dict[keysNvalues[0]] = value
-        
+
         new_instance = HBNBCommand.classes[class_name]()
         print(new_instance.id)
         obj_key = class_name + "." + new_instance.id
@@ -210,7 +213,7 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
 
         try:
-            del(storage.all()[key])
+            del (storage.all()[key])
             storage.save()
         except KeyError:
             print("** no instance found **")
@@ -342,6 +345,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
