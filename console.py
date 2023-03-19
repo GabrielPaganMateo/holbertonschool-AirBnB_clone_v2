@@ -115,15 +115,38 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
+        split_args = args.partition(" ")
+        class_name = split_args[0]
+        parameters = split_args[2]
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
+        if len(args) - 1 > len(class_name):
+            parameters = args[(len(class_name) + 1):].split(" ")
+            parameter_dict = {}
+            for i in range(0, len(parameters)):
+                keysNvalues = parameters[i].split("=")
+                value = keysNvalues[1]
+                try:
+                    value = int(keysNvalues[1])
+                except Exception:
+                    try:
+                        value = float(keysNvalues[1])
+                    except Exception:
+                        """Edge Case Missing ? Escape double quotes with backslash"""
+                        value = ''
+                        value += keysNvalues[1][1:-1].replace("_", " ")
+                parameter_dict[keysNvalues[0]] = value
+        
+        new_instance = HBNBCommand.classes[class_name]()
         print(new_instance.id)
+        obj_key = class_name + "." + new_instance.id
+        if parameter_dict:
+            new_dict = storage.all()[obj_key]
+            new_dict.__dict__.update(parameter_dict)
         storage.save()
 
     def help_create(self):
