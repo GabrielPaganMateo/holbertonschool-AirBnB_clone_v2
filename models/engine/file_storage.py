@@ -14,6 +14,7 @@ class FileStorage:
             class_name = class_type[class_type.find(".") + 1:-2]
             key = class_name + "." + obj.__dict__['id']
             del FileStorage.__objects[key]
+            self.save()
 
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
