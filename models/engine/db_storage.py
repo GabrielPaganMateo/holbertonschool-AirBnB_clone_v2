@@ -33,13 +33,10 @@ class DBStorage:
         if cls is None:
             all_objects = (self.__session.query(City, State).filter(City.state_id == State.id).all())
             for objs in all_objects:
-                for obj in range(0, 2):
+                for obj in range(0, len(objs)):
                     id = objs[obj].id
                     obj_key = '{}.{}'.format(objs[obj].__class__, id)
                     obj_dict.update({obj_key: objs[obj]})
-                """id = obj.id
-                obj_key = '{}.{}'.format(obj_class, id)
-                obj_dict.update({obj_key: obj})"""
             return obj_dict
         else:
             classes = {
