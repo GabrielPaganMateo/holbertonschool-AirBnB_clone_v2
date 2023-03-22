@@ -2,6 +2,7 @@
 """ Console Module """
 import cmd
 import sys
+from os import environ
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -143,12 +144,11 @@ class HBNBCommand(cmd.Cmd):
                         value = ''
                         value += keysNvalues[1][1:-1].replace("_", " ")
                 parameter_dict[keysNvalues[0]] = value
-        new_instance = HBNBCommand.classes[class_name]()
-        print(new_instance.id)
-        obj_key = class_name + "." + new_instance.id
         if parameter_dict != {}:
-            new_dict = storage.all()[obj_key]
-            new_dict.__dict__.update(parameter_dict)
+            new_instance = HBNBCommand.classes[class_name](**parameter_dict)
+        else:
+            new_instance = HBNBCommand.classes[class_name]()
+        print(new_instance.id)
         storage.save()
 
     def help_create(self):
@@ -225,20 +225,47 @@ class HBNBCommand(cmd.Cmd):
     def do_all(self, args):
         """ Shows all objects, or all objects of a class"""
         print_list = []
-
-        if args:
-            args = args.split(' ')[0]  # remove possible trailing args
-            if args not in HBNBCommand.classes:
-                print("** class doesn't exist **")
-                return
-            for k, v in storage._FileStorage__objects.items():
-                if k.split('.')[0] == args:
+        if environ.get('HBNB_TYPE_STORAGE') != 'db':
+            if args:
+                args = args.split(' ')[0]  # remove possible trailing args
+                if args not in HBNBCommand.classes:
+                    print("** class doesn't exist **")
+                    return
+                for k, v in storage._FileStorage__objects.items():
+                    if k.split('.')[0] == args:
+                        try:
+                            del v.__dict__['_sa_instance_state']
+                        except:
+                            pass
+                        print_list.append(str(v))
+            else:
+                for k, v in storage._FileStorage__objects.items():
+                    try:
+                        del v.__dict__['_sa_instance_state']
+                    except KeyError:
+                        pass
                     print_list.append(str(v))
-        else:
-            for k, v in storage._FileStorage__objects.items():
-                print_list.append(str(v))
 
-        print(print_list)
+            print(print_list)
+        else:
+            if args:
+                args = args.split(' ')[0]  # remove possible trailing args
+                if args not in HBNBCommand.classes:
+                    print("** class doesn't exist **")
+                    return
+                for k, v in storage.all(args).items():
+                    if k.split('.')[0] == args:
+                        del v.__dict__['_sa_instance_state']
+                        print_list.append(str(v))
+            else:
+                for k, v in storage.all().items():
+                    try:
+                        del v.__dict__['_sa_instance_state']
+                    except KeyError:
+                        pass
+                    print_list.append(str(v))
+
+            print(print_list)
 
     def help_all(self):
         """ Help information for the all command """
