@@ -137,10 +137,6 @@ class HBNBCommand(cmd.Cmd):
                     try:
                         value = float(keysNvalues[1])
                     except Exception:
-                        """
-                        Edge Case Missing ?
-                        Escape double quotes with backslash
-                        """
                         value = ''
                         value += keysNvalues[1][1:-1].replace("_", " ")
                 parameter_dict[keysNvalues[0]] = value
