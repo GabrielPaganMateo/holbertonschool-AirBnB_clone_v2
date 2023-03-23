@@ -31,7 +31,13 @@ class DBStorage:
         """Must return a dictionary like FileStorage"""
         obj_dict = {}
         if cls is None:
-            all_objects = (self.__session.query(City, State, User, Place).filter(City.state_id == State.id, Place.user_id == User.id, Place.city_id == City.id).all())
+            all_objects = (self.__session.query(City, State, User, Place)
+                           .filter(City.state_id == State.id,
+                                   Place.user_id == User.id,
+                                   Place.city_id == City.id,
+                                   Review.place_id == Place.id,
+                                   Review.user_id == User.id)
+                                   .all())
             for objs in all_objects:
                 for obj in range(0, len(objs)):
                     id = objs[obj].id
