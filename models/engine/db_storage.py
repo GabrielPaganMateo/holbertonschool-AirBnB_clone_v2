@@ -8,7 +8,7 @@ from models.user import User
 from models.state import State
 from models.city import City
 from models.amenity import Amenity
-from models.place import Place
+from models.place import Place, place_amenity
 from models.review import Review
 from models.base_model import BaseModel, Base
 
@@ -31,12 +31,14 @@ class DBStorage:
         """Must return a dictionary like FileStorage"""
         obj_dict = {}
         if cls is None:
-            all_objects = (self.__session.query(City, State, User, Place)
+            all_objects = (self.__session.query(City, State, User, Place, Review, Amenity)
                            .filter(City.state_id == State.id,
                                    Place.user_id == User.id,
                                    Place.city_id == City.id,
                                    Review.place_id == Place.id,
-                                   Review.user_id == User.id)
+                                   Review.user_id == User.id,
+                                   Amenity.id == place_amenity.amenity_id,
+                                   Place.id == place_amenity.place_id)
                                    .all())
             for objs in all_objects:
                 for obj in range(0, len(objs)):
