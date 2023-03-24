@@ -231,7 +231,7 @@ class HBNBCommand(cmd.Cmd):
                     if k.split('.')[0] == args:
                         try:
                             del v.__dict__['_sa_instance_state']
-                        except:
+                        except KeyError:
                             pass
                         print_list.append(str(v))
             else:

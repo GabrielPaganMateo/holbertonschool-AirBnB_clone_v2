@@ -19,11 +19,11 @@ class DBStorage:
 
     def __init__(self):
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'
-                                    .format(environ.get('HBNB_MYSQL_USER'),
-                                            environ.get('HBNB_MYSQL_PWD'),
-                                            environ.get('HBNB_MYSQL_HOST'),
-                                            environ.get('HBNB_MYSQL_DB'),
-                                            pool_pre_ping=True))
+                                      .format(environ.get('HBNB_MYSQL_USER'),
+                                              environ.get('HBNB_MYSQL_PWD'),
+                                              environ.get('HBNB_MYSQL_HOST'),
+                                              environ.get('HBNB_MYSQL_DB'),
+                                              pool_pre_ping=True))
         if environ.get('HBNB_ENV') == 'test':
             Base.metadata.drop_all(self.__engine)
 
@@ -31,7 +31,8 @@ class DBStorage:
         """Must return a dictionary like FileStorage"""
         obj_dict = {}
         if cls is None:
-            all_objects = (self.__session.query(City, State, User, Place, Review, Amenity)
+            all_objects = (self.__session.query
+                           (City, State, User, Place, Review, Amenity)
                            .filter(City.state_id == State.id,
                                    Place.user_id == User.id,
                                    Place.city_id == City.id,
@@ -39,7 +40,7 @@ class DBStorage:
                                    Review.user_id == User.id,
                                    Amenity.id == place_amenity.amenity_id,
                                    Place.id == place_amenity.place_id)
-                                   .all())
+                           .all())
             for objs in all_objects:
                 for obj in range(0, len(objs)):
                     id = objs[obj].id
@@ -48,9 +49,9 @@ class DBStorage:
             return obj_dict
         else:
             classes = {
-            'BaseModel': BaseModel, 'User': User, 'Place': Place,
-            'State': State, 'City': City, 'Amenity': Amenity,
-            'Review': Review
+                'BaseModel': BaseModel, 'User': User, 'Place': Place,
+                'State': State, 'City': City, 'Amenity': Amenity,
+                'Review': Review
             }
             for key in classes.keys():
                 if cls == key:
@@ -72,9 +73,10 @@ class DBStorage:
     def delete(self, obj=None):
         if obj is not None:
             self.__session.delete(obj)
-    
+
     def reload(self):
         Base.metadata.create_all(self.__engine)
-        session_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        session_factory = sessionmaker(bind=self.__engine,
+                                       expire_on_commit=False)
         Session = scoped_session(session_factory)
         self.__session = Session()
