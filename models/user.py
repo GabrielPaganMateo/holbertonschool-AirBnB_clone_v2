@@ -6,6 +6,7 @@ from sqlalchemy import Column, String
 from models.base_model import BaseModel, Base
 from os import environ
 
+
 class User(BaseModel, Base):
     """This class defines a user by various attributes """
     __tablename__ = "users"
@@ -14,5 +15,5 @@ class User(BaseModel, Base):
     first_name = Column(String(128), nullable=True)
     last_name = Column(String(128), nullable=True)
     if environ.get('HBNB_TYPE_STORAGE') == 'db':
-        places = relationship('Place', backref = 'user', cascade = 'all, delete')
-        reviews = relationship('Review', backref = 'user', cascade = 'all, delete')
+        places = relationship('Place', backref='user', cascade='all, delete')
+        reviews = relationship('Review', backref='user', cascade='all, delete')
