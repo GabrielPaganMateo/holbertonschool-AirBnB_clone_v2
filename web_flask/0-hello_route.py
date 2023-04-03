@@ -1,12 +1,15 @@
 #!/usr/bin/python3
+"""This is the module documentation"""
 from flask import Flask
 """
 Script that starts a Flask
-Web app
+Web app for my HBNB clone project
 """
 
 app = Flask(__name__)
 @app.route("/", strict_slashes=False)
 def hello_hbnb():
-    return "<p>Hello HBNB!<p>"
-app.run(host="0.0.0.0")
+    return "Hello HBNB!"
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000, debug=True)
