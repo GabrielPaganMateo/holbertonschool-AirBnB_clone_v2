@@ -30,7 +30,7 @@ def python(text):
         return "Python is cool"
     else:
         return "Python " + f'{text}'.replace("_", " ")
-    
+ 
 
 @app.route("/number/<int:n>", strict_slashes=False)
 def number(n):
