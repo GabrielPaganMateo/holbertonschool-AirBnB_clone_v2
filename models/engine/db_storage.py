@@ -54,7 +54,7 @@ class DBStorage:
                 'Review': Review
             }
             for key in classes.keys():
-                if cls == key:
+                if cls.__name__ == key:
                     objects = (self.__session.query(classes[key]).all())
                     obj_class = key
                     break
@@ -79,4 +79,7 @@ class DBStorage:
         session_factory = sessionmaker(bind=self.__engine,
                                        expire_on_commit=False)
         Session = scoped_session(session_factory)
-        self.__session = Session()
+        self.__session = Session
+    
+    def close(self):
+        self.__session.remove()

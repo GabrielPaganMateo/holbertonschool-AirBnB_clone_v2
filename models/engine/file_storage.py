@@ -8,6 +8,10 @@ class FileStorage():
     __file_path = 'file.json'
     __objects = {}
 
+    def close(self):
+        """Deserialize JSON file objects"""
+        self.reload()
+
     def delete(self, obj=None):
         """Deletes obj from __objects, if obj=None nothing happens"""
         if obj is not None:
