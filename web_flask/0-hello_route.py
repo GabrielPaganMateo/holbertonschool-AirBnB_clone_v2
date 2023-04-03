@@ -1,9 +1,9 @@
 #!/usr/bin/python3
+from flask import Flask
 """
 Script that starts a Flask
 Web app
 """
-from flask import Flask
 
 app = Flask(__name__)
 app.run("0.0.0.0")
