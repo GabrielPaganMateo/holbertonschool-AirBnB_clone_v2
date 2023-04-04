@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """This is the module documentation"""
-from flask import Flask
+from flask import Flask, g
 from flask import render_template
 from models import storage
 from models.state import State
@@ -51,8 +51,10 @@ def number_odd_or_even(n):
 
 
 @app.teardown_appcontext
-def RemoveSession(exception):
-    storage.close()
+def teardown_storage(exception):
+    db = g.pop('db', None)
+    if db is not None:
+        storage.close()
 
 @app.route("/states_list", strict_slashes=False)
 def state_list():
