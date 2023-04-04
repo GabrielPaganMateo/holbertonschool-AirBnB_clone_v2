@@ -51,7 +51,7 @@ def number_odd_or_even(n):
 
 
 @app.teardown_appcontext
-def RemoveSession():
+def RemoveSession(exception):
     storage.close()
 
 @app.route("/states_list", strict_slashes=False)
