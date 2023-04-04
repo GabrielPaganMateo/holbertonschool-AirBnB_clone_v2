@@ -53,7 +53,6 @@ def number_odd_or_even(n):
 @app.route("/states_list", strict_slashes=False)
 def state_list():
     all_states = storage.all(State).values()
-    all_states.sort()
     return render_template('7-states_list.html', all_states=all_states, header="States")
 
 
@@ -63,4 +62,4 @@ def teardown_appcontext(exception):
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0')
