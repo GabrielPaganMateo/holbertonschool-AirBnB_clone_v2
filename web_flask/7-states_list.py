@@ -51,10 +51,8 @@ def number_odd_or_even(n):
 
 
 @app.teardown_appcontext
-def teardown_storage(exception):
-    db = g.pop('db', None)
-    if db is not None:
-        storage.close()
+def teardown_storage():
+    storage.close()
 
 @app.route("/states_list", strict_slashes=False)
 def state_list():
