@@ -68,9 +68,12 @@ def cities_by_state():
 @app.route("/states/<id>", strict_slashes=False)
 def states(id=None):
     if id:
-        state = storage.all(State)[f'State.{id}']
-        return render_template('9-states.html', state=state,
-                           header="States", id=id)
+        try:
+            state = storage.all(State)[f'State.{id}']
+            return render_template('9-states.html', state=state,
+                            header="States", id=id)
+        except KeyError:
+            return render_template('9-states.html', error="Error",)
     else:
         all_states = storage.all(State).values()
         return render_template('9-states.html',
