@@ -64,6 +64,7 @@ def cities_by_state():
     return render_template('8-cities_by_states.html', all_states=all_states,
                            header="States")
 
+
 @app.teardown_appcontext
 def teardown_appcontext(exception):
     storage.close()
