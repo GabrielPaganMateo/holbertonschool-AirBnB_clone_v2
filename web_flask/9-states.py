@@ -64,6 +64,7 @@ def cities_by_state():
     return render_template('8-cities_by_states.html', all_states=all_states,
                            header="States")
 
+
 @app.route("/states", strict_slashes=False)
 @app.route("/states/<id>", strict_slashes=False)
 def states(id=None):
@@ -71,13 +72,13 @@ def states(id=None):
         try:
             state = storage.all(State)[f'State.{id}']
             return render_template('9-states.html', state=state,
-                            header="States", id=id)
+                                   header="States", id=id)
         except KeyError:
             return render_template('9-states.html', error="Error",)
     else:
         all_states = storage.all(State).values()
         return render_template('9-states.html',
-                            all_states=all_states, header="States")
+                               all_states=all_states, header="States")
 
 
 @app.teardown_appcontext
